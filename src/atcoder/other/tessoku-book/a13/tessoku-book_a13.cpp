@@ -22,20 +22,23 @@ int main() {
 
     cin >> N >> K;
     vector<int> A(N + 1);
+    vector<int> R(N + 1);
 
     prep(i, N) cin >> A[i];
 
     long long int result = 0;
-    prep(i, N) {
-        // upperboundを用いて、
-        // A[hoge] - A[i] > Kになる最初の位置を見つける
-        int target = A[i] + K;
-        auto it = upper_bound(A.begin() + i + 1, A.end(), target);
-        int diff = distance(A.begin()+1+i, it);
-        
-        result += diff;
+    krep(i, 1, N) {
+        if (i == 1) R[i] = 1;
+        else R[i] = R[i - 1];
+
+        while(R[i] < N && A[R[i]+1] - A[i] <= K) {
+            R[i]++;
+        }
     }
 
+    krep(i, 1, N) {
+        result += R[i] - i;
+    }
     cout << result << endl;
 
     return 0;
