@@ -17,12 +17,13 @@ int alphabet_to_int(char s) {
     return s - 'a';
 }
 
-int A[100009];
-int B[100009];
-int dp[100009];
+
 int main() {
     int N;
     cin >> N;
+
+    int A[N+1];
+    int B[N+1];
 
     for (int i = 2; i <= N; i++) {
         cin >> A[i];
@@ -31,20 +32,13 @@ int main() {
         cin >> B[i];
     }
 
+    int dp[N+1] = {0};
     dp[1] = 0;
     dp[2] = A[2];
     for (int i = 3; i <= N; i++) {
-        int route_a = A[i];
-        int route_b = B[i];
-
-        int total_route_a = dp[i-1] + route_a;
-        int total_route_b = dp[i-2] + route_b;
-
-        if (total_route_a > total_route_b) {
-            dp[i] = total_route_b;
-        } else {
-            dp[i] = total_route_a;
-        }
+        int total_route_a = dp[i-1] +  A[i];
+        int total_route_b = dp[i-2] + B[i];
+        dp[i] = min(total_route_a, total_route_b);
     }
 
     cout << dp[N] << endl;
